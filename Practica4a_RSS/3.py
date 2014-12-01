@@ -15,7 +15,7 @@ t = 0
 
 termino = sys.argv[1]
 
-rss_url = "http://ep00.epimg.net/rss/tags/ultimas_noticias.xml"
+rss_url = "http://ep00.epimg.net/rss/elpais/portada.xml"
 
 d = feedparser.parse(rss_url)
 

@@ -1,0 +1,18 @@
+$def with(campos)
+<!doctype html>
+
+<html>
+
+<h3>REGISTRO</h3>
+<body>
+
+<form name="input" action="/registro" method="post">
+
+${reg.render()}
+
+</form>
+
+</body>
+
+</html>
+

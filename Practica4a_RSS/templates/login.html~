@@ -1,0 +1,18 @@
+
+<!doctype html>
+
+<html>
+
+<h3>LOGIN</h3>
+<body>
+
+<form name="input" action="/login" method="post">
+
+${form.render()}
+
+</form>
+
+</body>
+
+</html>
+
