@@ -8,6 +8,12 @@ from web.contrib.template import render_mako
 import pymongo
 from bson.objectid import ObjectId
 from pymongo import Connection
+from pymongo.errors import ConnectionFailure
+from lxml import etree
+import sys
+import urllib
+import feedparser		# libreria para rss remotos
+
 
 urls = ( '/', 'index',
 	 '/login', 'sirve_login',
@@ -59,6 +65,7 @@ buscar = form.Form(
 )
 
 #Formulario RSS
+'''
 form_rss = form.Form (
 	form.Textbox ('enlace_rss', form.notnull, description='RSS:'),
 	form.Button ('Buscar'),
@@ -68,10 +75,11 @@ form_rss = form.Form (
 	]
 
 )
-
+'''
 #Expresiones regulares para validacion
 email = re.compile(r'\w+@([a-z]+\.)+[a-z]+')
 visa = re.compile(r'(\d){4}\-(\d){4}\-(\d){4}\-(\d){4}|(\d){16}')
+#rss = re.compile(r'http://(.+)\.xml')
 
 
 #Formulario de registro
@@ -128,6 +136,9 @@ class index:
 		web.header('Content-Type', 'text/html; charset=utf-8')
 		return plantillas.index(mensaje='')
 
+def comprueba_usuario():
+	usuario = sesion.usuario   # Devuelve '' cuando no está identificado
+	return usuario
 
 
 class sirve_login:
@@ -210,13 +221,24 @@ class busqueda:
 				return 'No existe ningun usuario con ese dni.'
 			else:
 				return "Nombre: " + resul["nombre"] + "\n" + "Apellidos: " + resul["apellidos"] + "\n"
-
-
 class RSS:
-	def GET (self):
-		r=form_rss()
-		web.header('Content-Type', 'text/html; charset=utf-8')
-		return plantillas.rss(reg=r, mensaje = '')
+	def GET(self):
+
+		usuario = comprueba_usuario()
+		url='http://ep00.epimg.net/rss/elpais/portada.xml'#Evitamos sobrecarga del proveeder RSS
+		urllib.urlretrieve(url, "portada.xml")
+
+		d = feedparser.parse('portada.xml')
+
+		tamanio = len(d.entries)
+		noticias=[]
+		posi = 0
+
+		while posi < tamanio:
+			noticias.insert(posi, d.entries[posi].title)  # para mostrar los titulares
+			posi +=1
+
+		return plantillas.noticiasrss(nombre = usuario, lista = noticias)
 
 
 
