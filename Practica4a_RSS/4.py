@@ -64,22 +64,10 @@ buscar = form.Form(
     form.Button('Buscar'),
 )
 
-#Formulario RSS
-'''
-form_rss = form.Form (
-	form.Textbox ('enlace_rss', form.notnull, description='RSS:'),
-	form.Button ('Buscar'),
 
-	validators = [
-		form.Validator("Formato de enlace rss no valido.", lambda i: rss.match(i.enlace_rss))
-	]
-
-)
-'''
 #Expresiones regulares para validacion
 email = re.compile(r'\w+@([a-z]+\.)+[a-z]+')
 visa = re.compile(r'(\d){4}\-(\d){4}\-(\d){4}\-(\d){4}|(\d){16}')
-#rss = re.compile(r'http://(.+)\.xml')
 
 
 #Formulario de registro
