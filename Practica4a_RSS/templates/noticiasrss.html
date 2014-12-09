@@ -2,13 +2,16 @@
 
 <html>
 
-<h3>NOTICIAS RSS</h3>
+<h1>NOTICIAS RSS</h1>
 <body>
-
-<h1>Bienvenido ${nombre} </h1>
 
 <h2>TITULARES</h2>
 %for i in lista:
+<p> ${i} </p>
+%endfor
+
+<h2>Enlaces</h2>
+%for i in enlaces:
 <p> ${i} </p>
 %endfor
 
