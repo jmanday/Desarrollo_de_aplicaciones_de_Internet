@@ -222,16 +222,16 @@ class RSS:
 		noticias=[]
 		noticias_enlaces=[]
 		posi = 0
-		posj=0
 
-		while posi < tamanio and posj < tamanio:
+		while posi < tamanio:
 			noticias.insert(posi, d.entries[posi].title)  # para mostrar los titulares
-			noticias_enlaces.insert(posi, d.entries[posj].link)
-			posi +=1
-			posj +=1
+			aux=posi+1
+			noticias.insert(aux, d.entries[posi].link)
+			posi +=2
+
 
 		web.header('Content-Type', 'text/html; charset=utf-8')
-		return plantillas.noticiasrss(lista = noticias, enlaces = noticias_enlaces)
+		return plantillas.noticiasrss(titular = noticias)
 
 
 
