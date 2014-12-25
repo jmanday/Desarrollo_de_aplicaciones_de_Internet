@@ -22,7 +22,7 @@ urls = ( '/', 'index',
 	 '/logout', 'logout',
 	 '/rss', 'RSS',
 	 '/charts', 'charts',
-	 '/charts_mostrar','charts_mostrar',
+	 '/charts_ajax','charts_ajax',
 	 '/(.*)', 'error'
        )
 
@@ -112,25 +112,12 @@ registro = form.Form(
 		]
 )
 
-form_charts = form.Form(
-	form.Textbox("nombre", form.notnull, description = 'Introduzca el nombre del gráfico'),
-	form.Textbox("enero", form.notnull, description = 'Introduzca el numero de ventas en Enero'),
-	form.Textbox("febrero", form.notnull, description = 'Introduzca el numero de ventas en Febrero'),
-	form.Textbox("marzo", form.notnull, description = 'Introduzca el numero de ventas en Marzo'),
-	form.Textbox("abril", form.notnull, description = 'Introduzca el numero de ventas en Abril'),
-	form.Textbox("mayo", form.notnull, description = 'Introduzca el numero de ventas en Mayo'),
-	form.Textbox("junio", form.notnull, description = 'Introduzca el numero de ventas en Junio'),
-	form.Textbox("julio", form.notnull, description = 'Introduzca el numero de ventas en Julio'),
-	form.Textbox("agosto", form.notnull, description = 'Introduzca el numero de ventas en Agosto'),
-	form.Textbox("septiembre", form.notnull, description = 'Introduzca el numero de ventas en Septiembre'),
-	form.Textbox("octubre", form.notnull, description = 'Introduzca el numero de ventas en Octubre'),
-	form.Textbox("noviembre", form.notnull, description = 'Introduzca el numero de ventas en Noviembre'),
-	form.Textbox("diciembre", form.notnull, description = 'Introduzca el numero de ventas en Diciembre'),
-	form.Button("Enviar")
-)
 
 form_grafico = form.Form(
-	form.Textbox("nombre", form.notnull, description = 'Introduzca el nombre del gráfico'),
+	form.Textbox("tokyo", form.notnull, description = 'Tokyo'),
+	form.Textbox("newyork", form.notnull, description = 'New York'),
+	form.Textbox("berlin", form.notnull, description = 'Berlin'),
+	form.Textbox("londres", form.notnull, description = 'Londres'),
     form.Button("Mostrar Grafica")
 )
 
@@ -263,44 +250,54 @@ class charts:
 	def GET(self):
 
 		usuario = comprueba_usuario()
-		f=form_charts()
+		f=form_grafico()
 		web.header('Content-Type', 'text/html; charset=utf-8')
 		return plantillas.formulario_charts(form=f,mensaje='')
 
 	def POST(self):
-		usuario = comprueba_usuario()
-		f = form_charts()
-		if not f.validates():
-			 web.header('Content-Type', 'text/html; charset=utf-8')
-			 return plantillas.formulario_charts(form=f,mensaje='Introducir datos correctamente')
-		else:
 
-			meses = {"nombre":f.d.nombre,
-					 "enero": f.d.enero,
-				     "febrero": f.d.febrero,
-				     "marzo": f.d.marzo,
-				     "abril": f.d.abril,
-				     "mayo": f.d.mayo,
-				     "junio": f.d.junio,
-				     "julio": f.d.julio,
-				     "agosto": f.d.agosto,
-				     "septiembre": f.d.septiembre,
-				     "octubre": f.d.octubre,
-				     "noviembre": f.d.noviembre,
-					 "diciembre": f.d.diciembre}
-
-			datos.insert(meses)
+	    usuario = comprueba_usuario()
+	    f = form_grafico()
+	    if not f.validates():
+	    	web.header('Content-Type', 'text/html; charset=utf-8')
+	      	return plantillas.formulario_charts(form=f,mensaje='Introducir datos correctamente')
+	    else:
 			web.header('Content-Type', 'text/html; charset=utf-8')
-			#return plantillas.formulario_chart(form=f,mensaje='Datos insertados correctamente')
-			fg=form_grafico()
-			return plantillas.datos_insertados(form=fg,mensaje='Datos insertados correctamente')
+			i = web.input()
+			tokyo=str(i.tokyo)
+			berlin=str(i.berlin)
+			newyork=str(i.newyork)
+			londres=str(i.londres)
 
-'''
-class charts_mostrar:
+
+			return plantillas.grafica(tokyo=tokyo,berlin=berlin,newyork=newyork,londres=londres)
+
+class charts_ajax:
 	def GET(self):
-		usuario=comprueba_usuario()
-		return plantillas.grafica_charts(usuario=usuario, enero=enero, febrero=febrero, marzo=marzo, abril=abril, mayo=mayo, junio=junio, julio=julio, agosto=agosto, septiembre=septiembre, octubre=octubre, noviembre=noviembre, diciembre=diciembre)
-'''
+
+		usuario = comprueba_usuario()
+		f=form_grafico()
+		web.header('Content-Type', 'text/html; charset=utf-8')
+		return plantillas.formulario_charts_ajax(form=f,mensaje='')
+
+	def POST(self):
+
+	    usuario = comprueba_usuario()
+	    f = form_grafico()
+	    if not f.validates():
+	    	web.header('Content-Type', 'text/html; charset=utf-8')
+	      	return plantillas.formulario_charts_ajax(form=f,mensaje='Introducir datos correctamente')
+	    else:
+			web.header('Content-Type', 'text/html; charset=utf-8')
+			i = web.input()
+			tokyo=str(i.tokyo)
+			berlin=str(i.berlin)
+			newyork=str(i.newyork)
+			londres=str(i.londres)
+
+
+			return plantillas.formulario_charts_ajax(tokyo=tokyo,berlin=berlin,newyork=newyork,londres=londres)
+
 
 if __name__ == "__main__":
     app.run()
