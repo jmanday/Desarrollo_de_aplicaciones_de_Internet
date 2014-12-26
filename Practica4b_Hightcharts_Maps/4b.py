@@ -23,6 +23,7 @@ urls = ( '/', 'index',
 	 '/rss', 'RSS',
 	 '/charts', 'charts',
 	 '/charts_ajax','charts_ajax',
+	 '/maps','maps',
 	 '/(.*)', 'error'
        )
 
@@ -276,27 +277,16 @@ class charts_ajax:
 	def GET(self):
 
 		usuario = comprueba_usuario()
-		f=form_grafico()
 		web.header('Content-Type', 'text/html; charset=utf-8')
-		return plantillas.formulario_charts_ajax(form=f,mensaje='')
+		return plantillas.formulario_charts_ajax()
 
-	def POST(self):
+class maps:
+	def GET(self):
 
-	    usuario = comprueba_usuario()
-	    f = form_grafico()
-	    if not f.validates():
-	    	web.header('Content-Type', 'text/html; charset=utf-8')
-	      	return plantillas.formulario_charts_ajax(form=f,mensaje='Introducir datos correctamente')
-	    else:
-			web.header('Content-Type', 'text/html; charset=utf-8')
-			i = web.input()
-			tokyo=str(i.tokyo)
-			berlin=str(i.berlin)
-			newyork=str(i.newyork)
-			londres=str(i.londres)
+		usuario = comprueba_usuario()
+		web.header('Content-Type', 'text/html; charset=utf-8')
+		return plantillas.maps()
 
-
-			return plantillas.formulario_charts_ajax(tokyo=tokyo,berlin=berlin,newyork=newyork,londres=londres)
 
 
 if __name__ == "__main__":
