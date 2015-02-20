@@ -1,4 +1,4 @@
 Desarrollo-de-aplicaciones-de-Internet
 ======================================
 
-En este repositorio estan alojadas aplicaciones web en Python
+Aplicaciones web en Python utilizando diferentes librerias como Google Highcharts, Google Maps, Tweepy o parsers para RSS
